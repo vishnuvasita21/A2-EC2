@@ -10,7 +10,7 @@ const dbPool = mysqlDriver.createPool({
   host: "a2db-instance-1.cf6am46smdav.us-east-1.rds.amazonaws.com",
   user: "admin",
   password: "vishnuvasita",
-  database: "a2db"
+  database: "a2db-instance-1"
 });
 
 app.post('/store-products', (req, res) => {
