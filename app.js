@@ -7,10 +7,10 @@ app.use(expressApp.json());
 
 const dbPool = mysqlDriver.createPool({
   connectionLimit: 10,
-  host: "a2db-instance-1.cf6am46smdav.us-east-1.rds.amazonaws.com",
+  host: "database-1-instance-1.cf6am46smdav.us-east-1.rds.amazonaws.com",
   user: "admin",
   password: "vishnuvasita",
-  database: "a2db"
+  database: "mydb"
 });
 
 app.post('/store-products', (req, res) => {
