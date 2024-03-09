@@ -14,7 +14,7 @@ const dbPool = mysqlDriver.createPool({
 });
 
 app.post('/store-products', (req, res) => {
-  const itemList = req.body.itemList;
+  const itemList = req.body.products;
 
   if (!itemList || !Array.isArray(itemList) || itemList.length === 0) {
     return res.status(400).json({ error: 'Empty!!' });
@@ -22,9 +22,9 @@ app.post('/store-products', (req, res) => {
 
   const itemsValid = itemList.every(item => {
     return (
-      item && item.productName && typeof item.productName === 'string' &&
-      item.productPrice && !isNaN(parseFloat(item.productPrice)) &&
-      typeof item.isAvailable === 'boolean'
+      item && item.name && typeof item.name === 'string' &&
+      item.price && !isNaN(parseFloat(item.price)) &&
+      typeof item.availability === 'boolean'
     );
   });
 
