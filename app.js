@@ -97,7 +97,7 @@ app.get('/list-products', (req, res) => {
       const formattedProducts = productsList.map(product => ({
         name: product.name,
         price: product.price,
-        availability: product.availability
+        availability: product.availability === 1? true : false
       }));
 
       res.status(200).json({ products: formattedProducts });
