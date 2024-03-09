@@ -13,6 +13,24 @@ const dbPool = mysqlDriver.createPool({
   database: "mydb"
 });
 
+
+const ensureTableExists = () => {
+  dbPool.query(
+    `CREATE TABLE IF NOT EXISTS products (
+      name VARCHAR(100),
+      price DECIMAL(10, 2),
+      availability BOOLEAN
+    )`,
+    (err) => {
+      if (err) {
+        console.error('Error ensuring products table exists:', err.message);
+        process.exit(1); 
+      }
+    }
+  );
+};
+
+ensureTableExists();
 app.post('/store-products', (req, res) => {
   const itemList = req.body.products;
 
