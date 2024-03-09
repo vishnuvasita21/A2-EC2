@@ -61,7 +61,7 @@ app.post('/store-products', (req, res) => {
     const productData = itemList.map(item => [
       item.name,
       item.price,
-      item.price
+      item.availability
     ]);
 
     dbConn.query(insertQuery, [productData], (error, queryResults) => {
