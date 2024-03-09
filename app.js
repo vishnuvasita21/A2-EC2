@@ -40,8 +40,9 @@ app.post('/store-products', (req, res) => {
 
   const itemsValid = itemList.every(item => {
     return (
-      item && item.name && typeof item.name === 'string' &&
-      item.price && !isNaN(parseFloat(item.price)) &&
+      item && 
+      typeof item.name === 'string' &&
+      typeof item.price === 'string' && 
       typeof item.availability === 'boolean'
     );
   });
@@ -58,9 +59,9 @@ app.post('/store-products', (req, res) => {
 
     const insertQuery = 'INSERT INTO products (name, price, availability) VALUES ?';
     const productData = itemList.map(item => [
-      item.productName,
-      item.productPrice,
-      item.isAvailable
+      item.name,
+      item.price,
+      item.price
     ]);
 
     dbConn.query(insertQuery, [productData], (error, queryResults) => {
@@ -83,7 +84,7 @@ app.get('/list-products', (req, res) => {
       return res.status(500).json({ error: 'Database connection failed' });
     }
 
-    const selectQuery = 'SELECT name AS productName, price AS productPrice, availability AS isAvailable FROM products';
+    const selectQuery = 'SELECT name, price, availability FROM products';
 
     dbConn.query(selectQuery, (queryError, productsList) => {
       dbConn.release();
@@ -94,12 +95,12 @@ app.get('/list-products', (req, res) => {
       }
 
       const formattedProducts = productsList.map(product => ({
-        productName: product.productName,
-        productPrice: product.productPrice,
-        isAvailable: product.isAvailable
+        name: product.name,
+        price: product.price,
+        availability: product.availability
       }));
 
-      res.status(200).json({ itemList: formattedProducts });
+      res.status(200).json({ products: formattedProducts });
     });
   });
 });
