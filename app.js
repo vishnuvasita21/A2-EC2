@@ -7,10 +7,10 @@ app.use(express.json());
 const port = process.env.HTTP_PORT || 80;
 
 const dbPool = mySql.createPool({
-  database: "mydb",
   host: "database-1-instance-1.cf6am46smdav.us-east-1.rds.amazonaws.com",
   user: "admin",
-  password: "vishnuvasita"
+  password: "vishnuvasita",
+  database: "mydb"
 });
 
 
@@ -83,7 +83,7 @@ app.post('/store-products', (req, res) => {
       }
     );
 
-    productList.array.forEach(product => {
+    productList.forEach(product => {
       dbConnection.query('INSERT INTO products (name, price, availability) VALUES (?, ?, ?)', [product.anme, product.price, product.availability], (queryError) => {
         if (queryError) {
           return res.status(500).json({ error: 'Inavid sql query'});
