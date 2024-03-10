@@ -20,7 +20,7 @@ const dbPool = mySql.createPool({
 
 app.get('/list-products', (req, res) => {
   
-  let resultProductList;
+  let resultProductList = [];
 
   //new db connection
   dbPool.getConnection((DatabaseError, dbConnection) => {
@@ -32,11 +32,11 @@ app.get('/list-products', (req, res) => {
         return res.status(500).json({ error: "Wrong query or Database error" });
       }
 
-      resultProductList = productsList.map(product => ({
+      productsList.forEach(product => (resultProductList.push({
         name: product.name,
         price: product.price,
         availability: product.availability === 1 ? true : false
-      }));
+      })));
 
           });
   });
