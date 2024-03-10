@@ -24,9 +24,10 @@ app.get('/list-products', async (req, res, next) => {
 
   const result = await dbPool.query('SELECT name, price, availability FROM products');
 
-  console.log(result[0]);
+  const products = result[0];
+  console.log(products);
 
-  res.status(200).json({ "products": result[0]});
+  res.status(200).json({ products });
 }catch(err){
   res.status(500).send("Error getting product list");
 }
