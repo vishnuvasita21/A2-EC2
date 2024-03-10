@@ -32,12 +32,15 @@ app.get('/list-products', (req, res) => {
         return res.status(500).json({ error: "Wrong query or Database error" });
       }
 
-      productsList.forEach(product => (resultProductList.push({
+      console.log('productsList', productsList);
+
+      productsList.forEach(product => resultProductList.push({
         name: product.name,
         price: product.price,
         availability: product.availability === 1 ? true : false
-      })));
+      }));
 
+      console.log('resultProductList', resultProductList );
           });
   });
   console.log(resultProductList);
