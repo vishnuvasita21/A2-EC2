@@ -24,7 +24,13 @@ app.get('/list-products', async (req, res, next) => {
 
   const result = await dbPool.query('SELECT name, price, availability FROM products');
 
-  const products = result[0];
+  const products = result.map((product)=>({
+    name: product.name,
+    price: product.price,
+    availability:  product.availability === 1 ? true : false
+  })
+   
+  );
   console.log(products);
 
   res.status(200).json({ products });
