@@ -30,7 +30,7 @@ app.get('/list-products', (req, res) => {
       const resultProductList = productsList.map(product => ({
         name: product.name,
         price: product.price,
-        availability: product.availability === 1? true : false
+        availability: product.availability === 1 ? true : false
       }));
 
       res.status(200).json({ products: resultProductList });
@@ -51,9 +51,9 @@ app.post('/store-products', (req, res) => {
   }
 
   const isProductValid = productList.every(product => {
-    if(typeof product.name === 'string' && product.name.trim() !== '' && typeof product.price === 'string' && product.price.trim() !== '' && typeof product.availability === 'boolean' && product){
-        console.log(product);
-        return true;
+    if (typeof product.name === 'string' && product.name.trim() !== '' && typeof product.price === 'string' && product.price.trim() !== '' && typeof product.availability === 'boolean' && product) {
+      console.log(product);
+      return true;
     }
     return false;
 
@@ -83,21 +83,15 @@ app.post('/store-products', (req, res) => {
       }
     );
 
-    productList.map(product => 
-      productName = product.name,
-      productPrice = product.price,
-      productAvailability = product.availability
-    );
-
-    dbConnection.query('INSERT INTO products (name, price, availability) VALUES (?, ?, ?)', [productName, productPrice, productAvailability], (queryError) => {
-      dbConnection.release();
-
-      if (queryError) {
-        return res.status(500).json({ error: 'Inavid sql query' });
-      }
-
-      res.status(200).json({ message: 'Success.'});
+    productList.array.forEach(product => {
+      dbConnection.query('INSERT INTO products (name, price, availability) VALUES (?, ?, ?)', [product.anme, product.price, product.availability], (queryError) => {
+        if (queryError) {
+          return res.status(500).json({ error: 'Inavid sql query'});
+        }
+      });
     });
+    dbConnection.release();
+    res.status(200).json({ message: 'Success.' });
   });
 });
 
