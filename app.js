@@ -17,7 +17,7 @@ const dbPool = mySql.createPool({
 
 // GET
 
-app.get('/list-products', (res) => {
+app.get('/list-products', (req, res) => {
   dbPool.getConnection((DatabaseError, dbConnection) => {
 
     dbConnection.query('SELECT name, price, availability FROM products', (queryError, productsList) => {
