@@ -51,7 +51,7 @@ app.post('/store-products', (req, res) => {
   }
 
   const isProductValid = productList.every(product => {
-    if(typeof product.name === 'string' && typeof product.price === 'string' && typeof product.availability === 'boolean' && product){
+    if(typeof product.name === 'string' && product.name.trim() !== '' && typeof product.price === 'string' && product.price.trim() !== '' && typeof product.availability === 'boolean' && product){
         console.log(product);
         return true;
     }
