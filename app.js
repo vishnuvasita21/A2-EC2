@@ -7,6 +7,7 @@ app.use(express.json());
 const port = 80;
 
 const dbPool = mySql.createPool({
+  connectionLimit: 10,
   host: "database-1-instance-1.cf6am46smdav.us-east-1.rds.amazonaws.com",
   user: "admin",
   password: "vishnuvasita",
@@ -88,9 +89,17 @@ app.post('/store-products', (req, res) => {
       }
     );
 
+    const insertProductList = productList.map((product) => [
+      product.name,
+      product.price,
+      product.availability
+    ]
+    );
+
+
     // Insert each products from the array
     productList.forEach(product => {
-      dbConnection.query('INSERT INTO products (name, price, availability) VALUES (?, ?, ?)', [product.name, product.price, product.availability], (queryError) => {
+      dbConnection.query('INSERT INTO products (name, price, availability) VALUES ?', [insertProductList], (queryError) => {
         if (queryError) {
           return res.status(500).json({ error: 'Inavid sql query'});
         }
