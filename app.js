@@ -84,7 +84,7 @@ app.post('/store-products', (req, res) => {
     );
 
     productList.forEach(product => {
-      dbConnection.query('INSERT INTO products (name, price, availability) VALUES (?, ?, ?)', [product.anme, product.price, product.availability], (queryError) => {
+      dbConnection.query('INSERT INTO products (name, price, availability) VALUES (?, ?, ?)', [product.name, product.price, product.availability], (queryError) => {
         if (queryError) {
           return res.status(500).json({ error: 'Inavid sql query'});
         }
