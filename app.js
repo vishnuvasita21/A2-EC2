@@ -38,30 +38,6 @@ app.get('/list-products', async (req, res, next) => {
   res.status(500).send("Error getting product list");
 }
   
-  //new db connection
-  // dbPool.getConnection((DatabaseError, dbConnection) => {
-
-  //   dbConnection.query('SELECT name, price, availability FROM products', (queryError, productsList) => {
-  //     dbConnection.release();
-
-  //     if (queryError || DatabaseError) {
-  //       return res.status(500).json({ error: "Wrong query or Database error" });
-  //     }
-
-  //     console.log('productsList', productsList);
-
-  //     productsList.forEach(product => resultProductList.push({
-  //       name: product.name,
-  //       price: product.price,
-  //       availability: product.availability === 1 ? true : false
-  //     }));
-
-  //     console.log(resultProductList);
-
-  //     res.status(200).json({ products: resultProductList });
-  //   });
-  // });
-
 });
 
 
