@@ -26,7 +26,7 @@ app.get('/list-products', async (req, res, next) => {
 
   console.log(result[0]);
 
-  res.status(200).send({ products: result[0]});
+  res.status(200).json({ "products": result[0]});
 }catch(err){
   res.status(500).send("Error getting product list");
 }
