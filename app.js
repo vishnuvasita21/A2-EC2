@@ -19,7 +19,7 @@ const dbPool = mySql.createPool({
 // GET
 
 app.get('/list-products', (req, res) => {
-  
+
   let resultProductList = [];
 
   //new db connection
@@ -40,12 +40,11 @@ app.get('/list-products', (req, res) => {
         availability: product.availability === 1 ? true : false
       }));
 
-      console.log('resultProductList', resultProductList );
-          });
-  });
-  console.log(resultProductList);
+      console.log(resultProductList);
 
       res.status(200).json({ products: resultProductList });
+    });
+  });
 
 });
 
@@ -106,11 +105,11 @@ app.post('/store-products', (req, res) => {
 
 
     // Insert each products from the array
-      dbConnection.query('INSERT INTO products (name, price, availability) VALUES ?', [insertProductList], (queryError) => {
-        if (queryError) {
-          return res.status(500).json({ error: 'Inavid sql query'});
-        }
-      });
+    dbConnection.query('INSERT INTO products (name, price, availability) VALUES ?', [insertProductList], (queryError) => {
+      if (queryError) {
+        return res.status(500).json({ error: 'Inavid sql query' });
+      }
+    });
 
     dbConnection.release();
     res.status(200).json({ message: 'Success.' });
