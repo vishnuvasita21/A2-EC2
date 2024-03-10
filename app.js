@@ -4,7 +4,7 @@ const mySql = require('mysql2');
 const app = express();
 app.use(express.json());
 
-const port = process.env.HTTP_PORT || 80;
+const port = 80;
 
 const dbPool = mySql.createPool({
   host: "database-1-instance-1.cf6am46smdav.us-east-1.rds.amazonaws.com",
@@ -18,6 +18,8 @@ const dbPool = mySql.createPool({
 // GET
 
 app.get('/list-products', (req, res) => {
+
+  //new db connection
   dbPool.getConnection((DatabaseError, dbConnection) => {
 
     dbConnection.query('SELECT name, price, availability FROM products', (queryError, productsList) => {
@@ -50,6 +52,7 @@ app.post('/store-products', (req, res) => {
     return res.status(400).json({ error: 'Product list is empty.' });
   }
 
+  //checking valid headers
   const isProductValid = productList.every(product => {
     if (typeof product.name === 'string' && product.name.trim() !== '' && typeof product.price === 'string' && product.price.trim() !== '' && typeof product.availability === 'boolean' && product) {
       console.log(product);
@@ -63,12 +66,14 @@ app.post('/store-products', (req, res) => {
     return res.status(400).json({ error: 'Invalid product detail' });
   }
 
+  //connecting to database
   dbPool.getConnection((err, dbConnection) => {
     if (err) {
       console.log(err.message);
       return res.status(500).json({ error: 'Database connection failed' });
     }
 
+    //checking if this table exist or not
     dbConnection.query(
       `CREATE TABLE IF NOT EXISTS products (
         name VARCHAR(100),
@@ -83,6 +88,7 @@ app.post('/store-products', (req, res) => {
       }
     );
 
+    // Insert each products from the array
     productList.forEach(product => {
       dbConnection.query('INSERT INTO products (name, price, availability) VALUES (?, ?, ?)', [product.name, product.price, product.availability], (queryError) => {
         if (queryError) {
