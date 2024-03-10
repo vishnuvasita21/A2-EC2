@@ -61,7 +61,7 @@ app.get('/list-products', async (req, res, next) => {
 
 // POST
 
-app.post('/store-products', (req, res) => {
+app.post('/store-products', async (req, res, next) => {
 
   const productList = req.body.products;
 
@@ -83,28 +83,7 @@ app.post('/store-products', (req, res) => {
     return res.status(400).json({ error: 'Invalid product detail' });
   }
 
-  //connecting to database
-  dbPool.getConnection((err, dbConnection) => {
-    if (err) {
-      console.log(err.message);
-      return res.status(500).json({ error: 'Database connection failed' });
-    }
-
-    //checking if this table exist or not
-    dbConnection.query(
-      `CREATE TABLE IF NOT EXISTS products (
-        name VARCHAR(100),
-        price VARCHAR(100),
-        availability BOOLEAN
-      )`,
-      (err) => {
-        dbConnection.release();
-        if (err) {
-          console.log('Table already exists', err.message);
-        }
-      }
-    );
-
+  
     const insertProductList = productList.map((product) => [
       product.name,
       product.price,
@@ -114,19 +93,12 @@ app.post('/store-products', (req, res) => {
 
 
     // Insert each products from the array
-    dbConnection.query('INSERT INTO products (name, price, availability) VALUES ?', [insertProductList], (queryError) => {
-      if (queryError) {
-        return res.status(500).json({ error: 'Inavid sql query' });
-      }
-
-      dbConnection.release();
+    const responseResult = await dbPool.query('INSERT INTO products (name, price, availability) VALUES ?', [insertProductList])
+   
     res.status(200).json({ message: 'Success.' });
-    });
-
-    
-  });
 });
 
+  
 // For any other route
 
 app.all('*', (res) => {
