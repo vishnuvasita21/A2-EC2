@@ -98,13 +98,12 @@ app.post('/store-products', (req, res) => {
 
 
     // Insert each products from the array
-    productList.forEach(product => {
       dbConnection.query('INSERT INTO products (name, price, availability) VALUES ?', [insertProductList], (queryError) => {
         if (queryError) {
           return res.status(500).json({ error: 'Inavid sql query'});
         }
       });
-    });
+
     dbConnection.release();
     res.status(200).json({ message: 'Success.' });
   });
