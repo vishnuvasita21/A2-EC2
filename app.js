@@ -23,6 +23,7 @@ app.get('/list-products', (req, res) => {
   //new db connection
   dbPool.getConnection((DatabaseError, dbConnection) => {
 
+    let resultProductList;
     dbConnection.query('SELECT name, price, availability FROM products', (queryError, productsList) => {
       dbConnection.release();
 
@@ -30,15 +31,18 @@ app.get('/list-products', (req, res) => {
         return res.status(500).json({ error: "Wrong query or Database error" });
       }
 
-      const resultProductList = productsList.map(product => ({
+      resultProductList = productsList.map(product => ({
         name: product.name,
         price: product.price,
         availability: product.availability === 1 ? true : false
       }));
 
-      res.status(200).json({ products: resultProductList });
-    });
+          });
   });
+  console.log(resultProductList);
+
+      res.status(200).json({ products: resultProductList });
+
 });
 
 
