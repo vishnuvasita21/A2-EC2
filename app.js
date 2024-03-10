@@ -19,11 +19,12 @@ const dbPool = mySql.createPool({
 // GET
 
 app.get('/list-products', (req, res) => {
+  
+  let resultProductList;
 
   //new db connection
   dbPool.getConnection((DatabaseError, dbConnection) => {
 
-    let resultProductList;
     dbConnection.query('SELECT name, price, availability FROM products', (queryError, productsList) => {
       dbConnection.release();
 
